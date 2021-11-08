@@ -54,9 +54,9 @@ class EditFragment : Fragment() {
         viewmodel.curProject.observe(viewLifecycleOwner, {
             binding.projTitleEdit.setText(it.title)
             binding.projDescEdit.setText(it.description)
-            binding.editProjAuthors.setText(it.authors.toString().substring(2, it.authors.toString().length - 2))
-            binding.editProjLinks.setText(it.links.toString().substring(2, it.links.toString().length - 2))
-            binding.editProjKeywords.setText(it.keywords.toString().substring(2, it.keywords.toString().length - 2))
+            binding.editProjAuthors.setText(it.authors.toString().substring(1, it.authors.toString().length - 1))
+            binding.editProjLinks.setText(it.links.toString().substring(1, it.links.toString().length - 1))
+            binding.editProjKeywords.setText(it.keywords.toString().substring(1, it.keywords.toString().length - 1))
         })
 
         binding.submit.setOnClickListener {

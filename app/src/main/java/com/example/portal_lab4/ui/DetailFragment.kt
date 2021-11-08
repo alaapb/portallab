@@ -71,9 +71,9 @@ class DetailFragment : Fragment() {
         viewmodel.curProject.observe(viewLifecycleOwner, {
             binding.projTitle.text = it.title?:""
             binding.projDesc.text = it.description?:""
-            binding.projAuthors.text = it.authors.toString().substring(2, it.authors.toString().length - 2)
-            binding.projLinks.text = it.links.toString().substring(2, it.links.toString().length - 2)
-            binding.projKeywords.text = it.keywords.toString().substring(2, it.keywords.toString().length - 2)
+            binding.projAuthors.text = it.authors.toString().substring(1, it.authors.toString().length - 1)
+            binding.projLinks.text = it.links.toString().substring(1, it.links.toString().length - 1)
+            binding.projKeywords.text = it.keywords.toString().substring(1, it.keywords.toString().length - 1)
             binding.isFavoriteSwitch.isChecked = it.isFavorite
         })
 

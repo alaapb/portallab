@@ -37,10 +37,10 @@ class NewProject : AppCompatActivity() {
             val project = Project(0,
                 projTitle.text.toString(),
                 projDesc.text.toString(),
-                arrayListOf(projAuthors.text.toString()),
-                arrayListOf(projLinks.text.toString()),
+                listOf(projAuthors.text.toString()),
+                listOf(projLinks.text.toString()),
                 false,
-                arrayListOf(projKeywords.text.toString()))
+                listOf(projKeywords.text.toString()))
             viewmodel.addProject(project)
             viewmodel.setCurProject(project)
 
