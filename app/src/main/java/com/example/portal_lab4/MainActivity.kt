@@ -1,5 +1,6 @@
 package com.example.portal_lab4
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -59,7 +60,6 @@ class MainActivity : AppCompatActivity(),
                 .addToBackStack(null)
                 .commit()
         }
-
     }
 
     override fun editProjDone(){
@@ -75,5 +75,16 @@ class MainActivity : AppCompatActivity(),
                 .addToBackStack(null)
                 .commit()
         }
+    }
+
+    override fun saveFavData(isFav:Boolean) {
+        getSharedPreferences("favOnly", Context.MODE_PRIVATE).edit()
+            .putBoolean("fav", isFav)
+            .commit()
+    }
+
+    override fun loadFavData():Boolean {
+        return getSharedPreferences("favOnly", Context.MODE_PRIVATE)
+            .getBoolean("fav", false)
     }
 }

@@ -40,9 +40,9 @@ class ProjectRepositoryImplement(
         return projectDao.searchProjectsbyTitle(projTitle)
     }
 
-//    override fun searchProjectsByFavorite(isFavorite: Boolean): LiveData<List<DBProject>> {
-//        return projectDao.searchProjectsbyFavorite(isFavorite)
-//    }
+    override fun searchProjectsByFavorite(): LiveData<List<Project>> {
+        return projectDao.searchProjectsbyFavorite()
+    }
 
     override fun count(): LiveData<Int> {
         return projectDao.count()

@@ -13,7 +13,7 @@ interface ProjectRepository {
 
     fun searchProject(projID: Long): LiveData<Project>
     fun searchProjectsByTitle(projTitle: String): LiveData<List<Project>>
-//    fun searchProjectsByFavorite(isFavorite: Boolean) : LiveData<List<DBProject>>
+    fun searchProjectsByFavorite() : LiveData<List<Project>>
 
     fun count(): LiveData<Int>
 }

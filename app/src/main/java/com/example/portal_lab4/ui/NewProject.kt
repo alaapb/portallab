@@ -12,6 +12,7 @@ import com.example.portal_lab4.MainActivity
 import com.example.portal_lab4.database.Project
 import com.example.portal_lab4.R
 import com.example.portal_lab4.viewmodel.ProjectViewModel
+import org.w3c.dom.Text
 
 class NewProject : AppCompatActivity() {
 
@@ -26,11 +27,20 @@ class NewProject : AppCompatActivity() {
 
         val projTitle = findViewById<TextView>(R.id.projTitleEdit)
         val projDesc = findViewById<TextView>(R.id.projDescEdit)
+        val projAuthors = findViewById<TextView>(R.id.editProjAuthors)
+        val projLinks = findViewById<TextView>(R.id.editProjLinks)
+        val projKeywords = findViewById<TextView>(R.id.editProjKeywords)
 
         viewmodel = ViewModelProvider(this).get(ProjectViewModel::class.java)
 
         submit.setOnClickListener {
-            val project = Project(0, projTitle.text.toString(), projDesc.text.toString())
+            val project = Project(0,
+                projTitle.text.toString(),
+                projDesc.text.toString(),
+                arrayListOf(projAuthors.text.toString()),
+                arrayListOf(projLinks.text.toString()),
+                false,
+                arrayListOf(projKeywords.text.toString()))
             viewmodel.addProject(project)
             viewmodel.setCurProject(project)
 

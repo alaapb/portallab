@@ -66,7 +66,7 @@ class ProjectListRecyclerViewAdapter(
         if(projectList.size > 0) {
             return projectList[pos]
         }
-        return Project(0, "", "")
+        return Project(0, "", "", arrayListOf(""), arrayListOf(""), false, arrayListOf(""))
     }
 
 }

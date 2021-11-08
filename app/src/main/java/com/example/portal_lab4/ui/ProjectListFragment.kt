@@ -1,22 +1,20 @@
 package com.example.portal_lab4.ui
 
 import android.content.Context
-import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 import androidx.lifecycle.ViewModelProvider
-import com.example.portal_lab4.R
 import com.example.portal_lab4.database.Project
+import com.example.portal_lab4.databinding.FragmentProjectListBinding
 import com.example.portal_lab4.viewmodel.ProjectViewModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 /**
@@ -28,6 +26,7 @@ class ProjectListFragment : Fragment(), ProjectListRecyclerViewAdapter.OnClickLi
     private lateinit var onClickListener: OnClickListener
     private lateinit var viewmodel:ProjectViewModel
     private lateinit var adapter:ProjectListRecyclerViewAdapter
+    private lateinit var binding:FragmentProjectListBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,35 +48,27 @@ class ProjectListFragment : Fragment(), ProjectListRecyclerViewAdapter.OnClickLi
     interface OnClickListener{
         fun addNewProj();
         fun onClick();
+        fun saveFavData(isFav:Boolean);
+        fun loadFavData():Boolean;
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_project_list, container, false)
-        // setupSimpleListView(view)
-        //setupRecyclerView(view)
-        return view
+        binding = FragmentProjectListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        if(view.findViewById<CheckBox>(R.id.favOnly).isChecked) {
-//            actualProjects.clear()
-//            for(project in Project.projects) {
-//                if(project.isFavorite) {
-//                    actualProjects.add(project)
-//                }
-//            }
-//            updateProj()
-//        }
+        binding.favOnly.isChecked = onClickListener.loadFavData()
 
         viewmodel =
             ViewModelProvider(requireActivity()).get(ProjectViewModel::class.java)
 
-        val recylcerView = view.findViewById<RecyclerView>(R.id.recylReview)
+        val recylcerView = binding.recylReview
 
         recylcerView.layoutManager = when {
             columnCount <= 1 -> LinearLayoutManager(context)
@@ -87,17 +78,26 @@ class ProjectListFragment : Fragment(), ProjectListRecyclerViewAdapter.OnClickLi
         adapter = ProjectListRecyclerViewAdapter(this)
         recylcerView.adapter = adapter
 
-        viewmodel.getAllProject().observe(viewLifecycleOwner, {
-            Log.d("list fragment", "get all projects")
-            adapter.replaceItem(it)
-            viewmodel.initCurProject(adapter.getProject(0))
-        })
+        if(binding.favOnly.isChecked) {
+            onClickListener.saveFavData(binding.favOnly.isChecked)
+            viewmodel.getFavProject().observe(viewLifecycleOwner, {
+                Log.d("list fragment", "get all favorite projects")
+                adapter.replaceItem(it)
+                viewmodel.initCurProject(adapter.getProject(0))
+            })
+        }else{
+            viewmodel.getAllProject().observe(viewLifecycleOwner, {
+                Log.d("list fragment", "get all projects")
+                adapter.replaceItem(it)
+                viewmodel.initCurProject(adapter.getProject(0))
+            })
+        }
 
         viewmodel.curProject.observe(viewLifecycleOwner, {
             adapter.notifyDataSetChanged()
         })
 
-        view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+        binding.fab.setOnClickListener {
             onClickListener.addNewProj()
         }
 
@@ -119,10 +119,5 @@ class ProjectListFragment : Fragment(), ProjectListRecyclerViewAdapter.OnClickLi
     override fun onItemClick(project: Project) {
         viewmodel.setCurProject(project)
         onClickListener.onClick()
-    }
-
-    fun updateProj(){
-        val recyler_view = activity?.findViewById<RecyclerView>(R.id.recylReview)
-        recyler_view?.adapter?.notifyDataSetChanged()
     }
 }

@@ -16,15 +16,6 @@ import com.example.portal_lab4.databinding.FragmentEditBinding
 import com.example.portal_lab4.viewmodel.ProjectViewModel
 
 class EditFragment : Fragment() {
-
-    private lateinit var projTitle: EditText
-    private lateinit var projDesc: EditText
-    private lateinit var projAuthors: EditText
-    private lateinit var projLinks: EditText
-    private lateinit var projKeywords: EditText
-    private lateinit var submit:Button
-    private lateinit var cancel:Button
-
     private lateinit var binding:FragmentEditBinding
     private lateinit var onClickListener: OnClickListener
 
@@ -51,40 +42,11 @@ class EditFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentEditBinding.inflate(inflater, container, false)
-        return inflater.inflate(R.layout.fragment_edit, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view,savedInstanceState)
-
-//        projTitle = view.findViewById(R.id.projTitleEdit)
-//        projDesc =  view.findViewById(R.id.projDescEdit)
-//        projAuthors = view.findViewById(R.id.editProjAuthors)
-//        projLinks = view.findViewById(R.id.editProjLinks)
-//        projKeywords = view.findViewById(R.id.editProjKeywords)
-//
-//        submit = view.findViewById<Button>(R.id.submit)
-//        cancel = view.findViewById<Button>(R.id.cancel)
-//
-//        projTitle.setText(Project.projects[Project.curProjId].title)
-//        projDesc.setText(Project.projects[Project.curProjId].description)
-//        projAuthors.setText(Project.projects[Project.curProjId].authors.toString().substring(1, Project.projects[Project.curProjId].authors.toString().length - 1))
-//        projLinks.setText(Project.projects[Project.curProjId].links.toString().substring(1, Project.projects[Project.curProjId].links.toString().length - 1))
-//        projKeywords.setText(Project.projects[Project.curProjId].keywords.toString().substring(1, Project.projects[Project.curProjId].keywords.toString().length - 1))
-//
-//        submit.setOnClickListener {
-//            Project.projects[Project.curProjId].title = projTitle.text.toString()
-//            Project.projects[Project.curProjId].description = projDesc.text.toString()
-//            Project.projects[Project.curProjId].authors = listOf(projAuthors.text.toString())
-//            Project.projects[Project.curProjId].links = listOf(projLinks.text.toString())
-//            Project.projects[Project.curProjId].keywords = listOf(projKeywords.text.toString())
-//            onClickListener.editProjDone()
-//
-//        }
-//
-//        cancel.setOnClickListener {
-//            onClickListener.editProjDone()
-//        }
 
         val viewmodel =
             ViewModelProvider(requireActivity()).get(ProjectViewModel::class.java)
@@ -92,10 +54,18 @@ class EditFragment : Fragment() {
         viewmodel.curProject.observe(viewLifecycleOwner, {
             binding.projTitleEdit.setText(it.title)
             binding.projDescEdit.setText(it.description)
+            binding.editProjAuthors.setText(it.authors.toString().substring(2, it.authors.toString().length - 2))
+            binding.editProjLinks.setText(it.links.toString().substring(2, it.links.toString().length - 2))
+            binding.editProjKeywords.setText(it.keywords.toString().substring(2, it.keywords.toString().length - 2))
         })
 
         binding.submit.setOnClickListener {
-            viewmodel.updateCurProject(binding.projTitleEdit.text.toString(), binding.projDescEdit.text.toString())
+            viewmodel.updateCurProject(binding.projTitleEdit.text.toString(),
+                binding.projDescEdit.text.toString(),
+                listOf(binding.editProjAuthors.text.toString()),
+                listOf(binding.editProjLinks.text.toString()),
+                viewmodel.curProject.value?.isFavorite?:false,
+                listOf(binding.editProjKeywords.text.toString()))
             onClickListener.editProjDone()
         }
 

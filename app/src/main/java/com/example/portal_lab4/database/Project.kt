@@ -7,11 +7,11 @@ import androidx.room.PrimaryKey
 data class Project(
     @PrimaryKey(autoGenerate = true) val id: Int,
     var title: String,
-    var description: String
-//    var authors: List<String>,
-//    var links: List<String>,
-//    var isFavorite: Boolean,
-//    var keywords: List<String>
+    var description: String,
+    var authors: List<String>,
+    var links: List<String>,
+    var isFavorite: Boolean,
+    var keywords: List<String>
     ) {
 
 }

@@ -69,9 +69,24 @@ class DetailFragment : Fragment() {
             ViewModelProvider(requireActivity()).get(ProjectViewModel::class.java)
 
         viewmodel.curProject.observe(viewLifecycleOwner, {
-            binding.projTitle.text = it?.title?:""
-            binding.projDesc.text = it?.description?:""
+            binding.projTitle.text = it.title?:""
+            binding.projDesc.text = it.description?:""
+            binding.projAuthors.text = it.authors.toString().substring(2, it.authors.toString().length - 2)
+            binding.projLinks.text = it.links.toString().substring(2, it.links.toString().length - 2)
+            binding.projKeywords.text = it.keywords.toString().substring(2, it.keywords.toString().length - 2)
+            binding.isFavoriteSwitch.isChecked = it.isFavorite
         })
+
+        binding.isFavoriteSwitch.setOnClickListener {
+            viewmodel.updateCurProject(
+                binding.projTitle.text.toString(),
+                binding.projDesc.text.toString(),
+                listOf(binding.projAuthors.text.toString()),
+                listOf(binding.projLinks.text.toString()),
+                binding.isFavoriteSwitch.isChecked,
+                listOf(binding.projKeywords.text.toString())
+            )
+        }
 
         binding.editProj.setOnClickListener {
             onClickListener.editProj()

@@ -25,8 +25,8 @@ interface ProjectDao {
     @Query("SELECT * FROM projects WHERE title like :projTitle ")
     fun searchProjectsbyTitle(projTitle:String): LiveData<List<Project>>
 
-//    @Query("SELECT * FROM projects WHERE isFavorite like :isFavorite")
-//    fun searchProjectsbyFavorite(isFavorite:Boolean) : LiveData<List<DBProject>>
+    @Query("SELECT * FROM projects WHERE isFavorite = 0")
+    fun searchProjectsbyFavorite() : LiveData<List<Project>>
 
     @Update
     fun editProject(project: Project)
