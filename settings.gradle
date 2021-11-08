@@ -1,0 +1,10 @@
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        jcenter() // Warning: this com.example.portal_lab4.repository is going to shut down soon
+    }
+}
+rootProject.name = "Portal_Lab4"
+include ':app'
